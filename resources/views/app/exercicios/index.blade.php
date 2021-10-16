@@ -5,14 +5,13 @@
         <div class="col-md-9">
             <h2>Exercicios</h2>
         </div>
-            <div class="col-md-3">
+            <div class="col-md-3 align-buttons">
                 <a href="{{ route('exercicios.create') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add Exercicio</a>
             </div>
     </div>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">id</th>
             <th scope="col">Nome</th>
             <th scope="col">Foco</th>
             <th scope="col">Operações</th>
@@ -22,7 +21,6 @@
         @if($exercicios)
             @foreach($exercicios as $exercicio) 
                 <tr>
-                    <th scope="row">{{ $exercicio->id }}</th>
                     <td>{{ $exercicio->name }}</td>
                     <td>{{ $exercicio->foco }}</td>
                     <td>

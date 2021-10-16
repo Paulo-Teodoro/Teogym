@@ -1,7 +1,7 @@
 @extends('app._theme')
 @section('content')
 <div class="cadpessoa">
-    <h1>Cadastrar Pessoa</h1>
+    <h1>Cadastrar Aluno</h1>
     <form action="{{ route('alunos.store') }}" method="POST">
         @csrf
         <div class="row">
@@ -57,28 +57,10 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label">senha</label>
-                <input type="password" name="senha" class="form-control">
+                <input type="password" name="password" class="form-control">
             </div>
         </div>
-        <label class="form-label">Tipo</label><br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="tipo" value="1" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-                Administrador
-            </label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="tipo" value="2" id="flexRadioDefault2">
-            <label class="form-check-label" for="flexRadioDefault2">
-                Personal
-            </label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="tipo" value="3" id="flexRadioDefault3" checked>
-            <label class="form-check-label" for="flexRadioDefault3">
-                Aluno
-            </label>
-        </div>
+        <input type="hidden" name="tipo" value="3">
         <br>
         <button type="submit" class="btn btn-success">Cadastrar</button>
     </form>

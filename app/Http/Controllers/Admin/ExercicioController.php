@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateExercicioRequest;
 use App\Models\Exercicio;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,9 @@ class ExercicioController extends Controller
      */
     public function index()
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         $exercicios = $this->repository->paginate();
 
         return view('app.exercicios.index', [
@@ -35,6 +39,9 @@ class ExercicioController extends Controller
      */
     public function create()
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         return view('app.exercicios.create');
     }
 
@@ -44,10 +51,13 @@ class ExercicioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUpdateExercicioRequest $request)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         $req = $request->all();
-        $req['responsavel_id'] = 1;
+        $req['responsavel_id'] = auth()->user()->id;
 
         if(!$this->repository->create($req))
             return dd($req);
@@ -74,6 +84,9 @@ class ExercicioController extends Controller
      */
     public function edit($id)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         if($exercicio = $this->repository->find($id))
             return view('app.exercicios.edit',[
                 "exercicio" => $exercicio
@@ -89,17 +102,18 @@ class ExercicioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreUpdateExercicioRequest $request, $id)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         if(!$exercicio = $this->repository->find($id))
-            dd($exercicio);
+            return redirect()->back();
 
         $req = $request->all();
-        $req['responsavel_id'] = 1;
+        $req['responsavel_id'] = auth()->user()->id;
         if($exercicio->update($req))
-            return redirect()->route('exercicios.index');
-
-        dd($req);    
+            return redirect()->route('exercicios.index');   
     }
 
     /**
@@ -110,6 +124,9 @@ class ExercicioController extends Controller
      */
     public function destroy($id)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         if(!$exercicio = $this->repository->find($id))
             dd($exercicio);
 

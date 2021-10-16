@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Pessoa;
 use DateTime;
 use Illuminate\Http\Request;
-use stdClass;
+use Illuminate\Support\Facades\Hash;
 
-class PessoaController extends Controller
+class AdminController extends Controller
 {
     private $repository;
 
@@ -26,10 +26,14 @@ class PessoaController extends Controller
      */
     public function index()
     {
-        $alunos = $this->repository->paginate();
+        if(!auth()->user()->is_admin()) {
+            abort(403);
+        }
 
-        return view('app.alunos.index', [
-            'alunos' => $alunos
+        $admins = $this->repository->where('tipo',1)->where('ativo',1)->paginate();
+
+        return view('app.admins.index', [
+            'admins' => $admins
         ]);
     }
 
@@ -40,7 +44,10 @@ class PessoaController extends Controller
      */
     public function create()
     {
-        return view('app.alunos.create');
+        if(!auth()->user()->is_admin()) {
+            abort(403);
+        }
+        return view('app.admins.create');
     }
 
     /**
@@ -51,12 +58,15 @@ class PessoaController extends Controller
      */
     public function store(Request $request)
     {
+        if(!auth()->user()->is_admin()) {
+            abort(403);
+        }
         $req = $request->all();
-        $req['imc'] = $request->peso/($request->altura*$request->altura);
+        $req['password'] = Hash::make($request->password);
+        $req['tipo'] = 1;
 
         if($this->repository->create($req))
-            return redirect()->route('alunos.index');
-
+            return redirect()->route('admins.index');
     }
 
     /**
@@ -78,12 +88,16 @@ class PessoaController extends Controller
      */
     public function edit($id)
     {
-        if(!$pessoa = $this->repository->find($id))
-            return redirect()->back();
+        if(!$pessoa = $this->repository->where('tipo', 1)->find($id))
+            return redirect()->back()->with('warning', "Ooops! este administrador não existe");
+        
+        if(!auth()->user()->is_admin()) {
+                abort(403);  
+        }            
         
         $pessoa->data_nasc = (new DateTime($pessoa->data_nasc))->format("Y-m-d"); 
         
-        return view('app.alunos.edit', [
+        return view('app.admins.edit', [
             'pessoa' => $pessoa
         ]);
     }
@@ -97,25 +111,32 @@ class PessoaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(!$pessoa = $this->repository->find($id))
-            return redirect()->back();
+        if(!$pessoa = $this->repository->where('tipo', 1)->find($id)) {
+            return redirect()->back()->with('warning', "Ooops! este administrador não existe");
+        }   
+
+        if(!auth()->user()->is_admin()) {
+            abort(403);  
+        } 
 
         $req = $request->all();
-        $req['imc'] = $request->peso/($request->altura*$request->altura);
 
-        if(!empty($req['senha'])) {
-            if (empty($req["senha_conf"]) || $req["senha_conf"] != $req["senha"]) {
+        if(!empty($req['password'])) {
+            if (empty($req["password_conf"]) || $req["password_conf"] != $req["password"]) {
                 return redirect()->back()->with('warning', 'Para alterar sua senha, informe e repita a nova senha!');
             }
-            unset($req['senha_conf']);
+            unset($req['password_conf']);
+            $req['password'] = Hash::make($request->password);
         } else {
-            unset($req['senha_conf']);
-            unset($req['senha']);
+            unset($req['password_conf']);
+            unset($req['password']);
         }
 
-        $pessoa->update($req);
+        $req['tipo'] = 1;
 
-        return redirect()->route('alunos.index');
+        $pessoa->update($req);
+        
+        return redirect()->route('admins.index');
     }
 
     /**
@@ -126,11 +147,15 @@ class PessoaController extends Controller
      */
     public function destroy($id)
     {
-        if(!$pessoa = $this->repository->find($id))
-            return redirect()->back();
+        if(!auth()->user()->is_admin()) {
+            abort(403);
+        }
+        if(!$pessoa = $this->repository->where('tipo', 1)->find($id))
+            return redirect()->back()->with('warning', "Ooops! este administrador não existe");
+            
+        $pessoa->ativo = 0;
+        $pessoa->update();
         
-        $pessoa->delete();
-        
-        return redirect()->route('alunos.index');
+        return redirect()->route('admins.index');
     }
 }

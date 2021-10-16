@@ -3,11 +3,13 @@
 <section class="section-alunos">
     <div class="row">
         <div class="col-md-9">
-            <h2>rotinas</h2>
+            <h2>Rotinas</h2>
         </div>
-        <div class="col-md-3">
+        @if (!auth()->user()->is_aluno())
+        <div class="col-md-3 align-buttons">
             <a href="{{ route("rotinas.create") }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add rotina</a>
         </div>
+        @endif
     </div>
     <table class="table">
         <thead>

@@ -2,11 +2,15 @@
 @section('content')
 <section class="section-alunos">
     <div class="row">
-        <div class="col-md-9">
-            <h2>treinos</h2>
+        <div class="col-md-6">
+            <h2>Treinos</h2>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6 align-buttons">
+            <a href="{{ route('rotinas.index') }}" class="btn btn-warning">Voltar</a>
+            <a href="{{ route('relatorios.rotina', $rotina->id) }}" target="_blank" class="btn btn-primary"><i class="fas fa-file-alt"></i> Imprimir</a>
+        @if (!auth()->user()->is_aluno())
             <a href="{{ route('treinos.create', $rotina->id) }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add treino</a>
+        @endif
         </div>
     </div>
     <table class="table">

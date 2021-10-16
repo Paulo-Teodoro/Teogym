@@ -2,20 +2,19 @@
 @section('content')
 <section class="section-alunos">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-6">
             <h2>Alunos</h2>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6 align-buttons">
             <a href="{{ route('alunos.create') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add Aluno</a>
         </div>
     </div>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">id</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Email</th>
-            <th scope="col">IMC</th>
+            <th scope="col" class="">Nome</th>
+            <th scope="col" class="d-none d-sm-block">Email</th>
+            <th scope="col" class="">IMC</th>
             <th scope="col">Operação</th>
         </tr>
         </thead>
@@ -23,9 +22,8 @@
             @if ($alunos)
             @foreach($alunos as $aluno)
         <tr>
-            <th scope="row">{{ $aluno->id }}</th>
             <td>{{ $aluno->name }}</td>
-            <td>{{ $aluno->email }}</td>
+            <td class="d-none d-sm-block">{{ $aluno->email }}</td>
             <td>{{ $aluno->imc }}</td>
             <td>
                 <a href="{{ route('alunos.edit', $aluno->id) }}" class="btn edit"><i class="fas fa-user-edit"></i></a>

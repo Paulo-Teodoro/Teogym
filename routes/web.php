@@ -1,22 +1,43 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ExercicioController;
-use App\Http\Controllers\Admin\PessoaController;
+use App\Http\Controllers\Admin\AlunoController;
+use App\Http\Controllers\Admin\PersonalController;
+use App\Http\Controllers\Admin\RelatorioController;
 use App\Http\Controllers\Admin\RotinaController;
 use App\Http\Controllers\Admin\TreinoController;
 use App\Http\Controllers\Admin\TreinoExercicioController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/s', function () {
+    dd(Hash::make('12345678'));
 });
 
-Route::prefix('app')->group(function () {
+Route::middleware(['auth'])->prefix('app')->group(function () {
     Route::get('/', function () {
         return view('app.home');
     })->name('app.home');
 
-    Route::resource('/alunos', PessoaController::class);
+    Route::resource('/alunos', AlunoController::class);
+
+    Route::resource('/personais', PersonalController::class);
+
+    Route::resource('/admins', AdminController::class);
 
     Route::resource('/exercicios', ExercicioController::class);
 
@@ -39,5 +60,13 @@ Route::prefix('app')->group(function () {
         });
         Route::post('/treino-exercicios/store', [TreinoExercicioController::class, 'store'])->name('treino-exercicios.store');
     });
+
+    Route::get('/relatorios', [RelatorioController::class, 'index'])->name('relatorios.index');
+    Route::get('/relatorios/rotina/{id}', [RelatorioController::class, 'rotina'])->name('relatorios.rotina');
+    Route::get('/relatorios/ultimos-alunos', [RelatorioController::class, 'lastAlunos'])->name('relatorios.alunos');
+    Route::get('/relatorios/rotinas-quantidade', [RelatorioController::class, 'rotinaPessoa'])->name('relatorios.rotinaPessoa');
+    Route::get('/relatorios/historico-aluno/{id}', [RelatorioController::class, 'historicoAluno'])->name('relatorios.historicoAluno');
 });
 
+
+require __DIR__.'/auth.php';

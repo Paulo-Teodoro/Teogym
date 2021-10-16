@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTreinoRequest;
 use App\Models\Rotina;
 use App\Models\Treino;
 use Illuminate\Http\Request;
@@ -22,6 +23,11 @@ class TreinoController extends Controller
     public function index($id)
     {
         $rotina = Rotina::find($id);
+        if(auth()->user()->is_aluno()) {
+            if($rotina->aluno_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
         $treinos = $rotina->treinos;
 
         return view('app.treinos.index', [
@@ -37,6 +43,9 @@ class TreinoController extends Controller
      */
     public function create($id)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         $rotina = Rotina::find($id);
         return view('app.treinos.create', [
             "rotina" => $rotina
@@ -49,8 +58,11 @@ class TreinoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTreinoRequest $request)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         if($this->repository->create($request->all()))
             return redirect()->route('treinos.index', $request->rotina_id);
     }
@@ -97,8 +109,17 @@ class TreinoController extends Controller
      */
     public function destroy($idRotina, $idTreino)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
         if(!$treino = $this->repository->find($idTreino))
             redirect()->back();
+
+        $exercicios = $treino->exercicios()->get();   
+        
+        foreach($exercicios as $exercicio) {
+            $treino->exercicios()->detach($exercicio->id);
+        }
 
         $treino->delete();
 

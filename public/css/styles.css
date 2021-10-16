@@ -5,56 +5,6 @@
     --hover-color-blue: #18aeed;
 }
 
-/*DEFAULT LOAD*/
-.ajax_load {
-    display: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: var(--index-modal);
-}
-
-.ajax_load_box {
-    margin: auto;
-    text-align: center;
-    color: #ffffff;
-    font-weight: var(--weight-bold);
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-}
-.ajax_load_box_circle {
-    border: 16px solid #e3e3e3;
-    border-top: 16px solid var(--hover-color-blue);
-    border-radius: 50%;
-    margin: auto;
-    width: 80px;
-    height: 80px;
-
-    -webkit-animation: spin 1.2s linear infinite;
-    -o-animation: spin 1.2s linear infinite;
-    animation: spin 1.2s linear infinite;
-}
-
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
 .app {
     background: #f4f8fb;
 }
@@ -85,6 +35,17 @@
 .navbar-nav .nav-link {
     padding-left: 10px;
     padding-right: 10px;
+}
+.navbar-nav button {
+    background: transparent;
+    border: none;
+    color: #777;
+    font-weight: 600;
+    width: 100%;
+    text-align: left;
+}
+.navbar-nav button:focus, .navbar-nav button:hover {
+    color: #fff;
 }
 .nav-link:focus, .nav-link:hover {
     color: #fff;
@@ -117,8 +78,8 @@
     color: #25cff2;
     background: #fff;
 }
-.section-alunos .btn-info {
-    float: right;
+.align-buttons {
+    text-align: right;
 }
 .cadpessoa {
     padding: 3vh;
@@ -165,4 +126,45 @@
     border-color: #f73131;
     color: #f73131;
     box-shadow: 0px 0px 5px 1px #f73131;
+}
+
+.logo-small {
+    max-width: 40px;
+}
+
+@media (max-width: 768px) {
+    .app main {
+        margin: 0;
+    }
+}
+
+@media (min-width: 768px) {
+.d-sm-block {
+    display: revert!important;
+}
+}
+
+/* sidebar */
+.sidebar {
+    margin-bottom: 30px;
+}
+
+.sidebar-title {
+    color: rgb(47 185 247)!important;
+}
+
+.sidebar-title a {
+    color: rgb(47 185 247)!important;
+    text-decoration: none;
+}
+
+.sidebar a {
+    color: #777;
+}
+
+.sidebar .modal {
+    width: 300px;
+}
+.sidebar .modal-content {
+    width: 300px;
 }

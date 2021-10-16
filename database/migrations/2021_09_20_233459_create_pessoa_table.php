@@ -24,9 +24,10 @@ class CreatePessoaTable extends Migration
             $table->string('telefone');
             $table->text('objetivo')->nullable();
             $table->string('email')->unique();
-            $table->string('senha');
+            $table->string('password');
             $table->integer('tipo');
             $table->float('imc')->nullable();
+            $table->integer('ativo')->nullable()->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

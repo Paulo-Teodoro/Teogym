@@ -2,17 +2,20 @@
 @section('content')
 <section class="section-alunos">
     <div class="row">
-        <div class="col-md-9">
-            <h2>exercicios</h2>
+        <div class="col-md-6">
+            <h2>Exercicios</h2>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6 align-buttons">
+            <a href="{{ route('treinos.index', $rotina) }}" class="btn btn-warning">Voltar</a>    
+        @if (!auth()->user()->is_aluno())
             <a href="{{ route('treino-exercicios.create', [$rotina,$treino] ) }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add exercicio</a>
+        @endif
         </div>
     </div>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Seq</th>
+            <th scope="col" class="d-none d-sm-block">Seq</th>
             <th scope="col">Exercicio</th>
             <th scope="col">Repetições</th>
             <th scope="col">Series</th>
@@ -24,7 +27,7 @@
         @if($exercicios)
             @foreach($exercicios as $exercicio)
                 <tr>
-                    <th scope="row">{{ $exercicio->pivot->sequencia }}</th>
+                    <th scope="row" class="d-none d-sm-block">{{ $exercicio->pivot->sequencia }}</th>
                     <td>{{ $exercicio->name }}</td>
                     <td>{{ $exercicio->pivot->repeticoes }}</td>
                     <td>{{ $exercicio->pivot->series }}</td>

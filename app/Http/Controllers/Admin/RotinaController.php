@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreRotinaRequest;
 use App\Models\Pessoa;
 use App\Models\Rotina;
 use Illuminate\Http\Request;
@@ -22,8 +23,11 @@ class RotinaController extends Controller
      */
     public function index()
     {
+        if(auth()->user()->is_aluno()) {
+            $rotinas = $this->repository->where('aluno_id', auth()->user()->id)->paginate();
+        } else {
         $rotinas = $this->repository->paginate(); 
-        
+        }
 
         return view('app.rotinas.index', [
             "rotinas" => $rotinas
@@ -37,7 +41,10 @@ class RotinaController extends Controller
      */
     public function create()
     {
-        $alunos = Pessoa::get();
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
+        $alunos = Pessoa::where('tipo', 3)->get();
         return view('app.rotinas.create', [
             "alunos" => $alunos
         ]);
@@ -51,8 +58,14 @@ class RotinaController extends Controller
      */
     public function store(Request $request)
     {
+        if(auth()->user()->is_aluno()) {
+            abort(403);
+        }
+        if(!Pessoa::where('tipo',3)->find($request->aluno)) {
+            return redirect()->back()->with('warning', 'Por favor selecione um aluno');
+        }
         $req = [
-            "responsavel_id" => 1,
+            "responsavel_id" => auth()->user()->id,
             "aluno_id" => $request->aluno
         ];
 
@@ -105,6 +118,13 @@ class RotinaController extends Controller
     {
         if(!$rotina = $this->repository->find($id))
             return redirect()->back();
+        
+        $treinos = $rotina->treinos; 
+        
+        foreach($treinos as $treino) {
+            $treinoController = new TreinoController($treino);
+            $treinoController->destroy($rotina->id, $treino->id);
+        }
         
         $rotina->delete();
         
