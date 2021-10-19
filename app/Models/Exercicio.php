@@ -10,4 +10,13 @@ class Exercicio extends Model
     use HasFactory;
     protected $table = 'exercicio';
     protected $fillable = ['name', 'foco', 'responsavel_id'];
+
+    public function search($filter = null) {
+        $results = $this
+                    ->where('name', 'LIKE', "%{$filter}%")
+                    ->orWhere('foco', 'LIKE', "%{$filter}%")
+                    ->paginate();
+
+        return $results;
+    }
 }

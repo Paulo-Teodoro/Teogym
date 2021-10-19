@@ -71,6 +71,12 @@
     min-height: 70vh;
     padding: 2vh;
 }
+.search {
+    margin: 10px 0;
+}
+.search form {
+    padding: 0;
+}
 .btn-info {
     color: #fff;
 }

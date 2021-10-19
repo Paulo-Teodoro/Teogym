@@ -24,25 +24,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/s', function () {
-    dd(Hash::make('12345678'));
-});
-
 Route::middleware(['auth'])->prefix('app')->group(function () {
     Route::get('/', function () {
         return view('app.home');
     })->name('app.home');
 
     Route::resource('/alunos', AlunoController::class);
+    Route::any('/alunos/search', [AlunoController::class, 'search'])->name('alunos.search');
 
     Route::resource('/personais', PersonalController::class);
 
     Route::resource('/admins', AdminController::class);
 
     Route::resource('/exercicios', ExercicioController::class);
+    Route::any('/exercicios/search', [ExercicioController::class, 'search'])->name('exercicios.search');
 
     Route::prefix('rotinas')->group(function () {
         Route::get('/', [RotinaController::class, 'index'])->name('rotinas.index');
+        Route::any('/search', [RotinaController::class, 'search'])->name('rotinas.search');
         Route::get('/create', [RotinaController::class, 'create'])->name('rotinas.create');
         Route::post('/store', [RotinaController::class, 'store'])->name('rotinas.store');
         Route::delete('/destroy/{id}', [RotinaController::class, 'destroy'])->name('rotinas.destroy');

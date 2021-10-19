@@ -23,4 +23,22 @@ class Rotina extends Model
     public function treinos() {
         return $this->hasMany(Treino::class);
     }
+
+    public function search($filter = null) {
+        $pessoas = Pessoa::where('name', 'LIKE', "%{$filter}%")->get();
+        $in = "(";
+        foreach($pessoas as $pessoa) {
+            $in .= "'{$pessoa->id}',";
+        }
+
+
+        $in = substr($in, 0, -1) . ")";
+
+        $results = $this
+                    ->whereRaw("responsavel_id IN {$in}")
+                    ->orWhereRaw("aluno_id IN {$in}")
+                    ->paginate();            
+
+        return $results;
+    }
 }

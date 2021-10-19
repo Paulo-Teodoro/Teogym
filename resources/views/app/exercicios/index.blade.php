@@ -2,13 +2,20 @@
 @section('content')
 <section class="section-alunos">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-6">
             <h2>Exercicios</h2>
         </div>
-            <div class="col-md-3 align-buttons">
-                <a href="{{ route('exercicios.create') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add Exercicio</a>
+            <div class="col-6 align-buttons">
+                <a href="{{ route('exercicios.create') }}" class="btn btn-info"><i class="fas fa-plus"></i> Add Exercicio</a>
             </div>
     </div>
+    <div class="row search">
+        <form action="{{ route('exercicios.search') }}" method="post" class="form d-flex">
+            @csrf
+            <input type="text" name="filter" placeholder="Nome" class="form-control me-2" value="{{ $filters['filter'] ?? '' }}">
+            <button type="submit" class="btn btn-outline-info">Filtrar</button>
+        </form>
+    </div>  
     <table class="table">
         <thead>
         <tr>
@@ -24,8 +31,8 @@
                     <td>{{ $exercicio->name }}</td>
                     <td>{{ $exercicio->foco }}</td>
                     <td>
-                        <a href="{{ route('exercicios.edit', $exercicio->id) }}" class="btn edit"><i class="fas fa-user-edit"></i></a>
-                        <button type="button" class="btn delete" data-bs-toggle="modal" data-bs-target="#Modal{{ $exercicio->id }}"><i class="fas fa-user-times"></i></button>
+                        <a href="{{ route('exercicios.edit', $exercicio->id) }}" class="btn edit"><i class="fas fa-dumbbell"></i></a>
+                        <button type="button" class="btn delete" data-bs-toggle="modal" data-bs-target="#Modal{{ $exercicio->id }}"><i class="fas fa-trash-alt"></i></button>
                         <div class="modal fade" id="Modal{{ $exercicio->id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -53,6 +60,11 @@
         @endif
         </tbody>
     </table>
+    @if (isset($filters))
+        {!! $exercicios->appends($filters)->links() !!}      
+    @else
+        {!! $exercicios->links() !!}
+    @endif
 </section>
 
 @endsection

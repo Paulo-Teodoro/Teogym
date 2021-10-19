@@ -62,4 +62,12 @@ class Pessoa extends User
         return $this->hasMany(Rotina::class,'aluno_id');
     }
 
+    public function searchAlunos($filter = null) {
+        $results = $this
+                    ->where('tipo', 3)
+                    ->where('name', 'LIKE', "%{$filter}%")
+                    ->paginate();
+
+        return $results;
+    }
 }

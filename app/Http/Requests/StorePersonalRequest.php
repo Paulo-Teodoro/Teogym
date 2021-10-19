@@ -26,8 +26,8 @@ class StorePersonalRequest extends FormRequest
         return [
             'name' => "required|min:3|max:255",
             'data_nasc' => "required",
-            'cpf' => 'required',
-            'telefone' => 'required',
+            'cpf' => 'required|cpf',
+            'telefone' => 'required|celular_com_ddd',
             'endereco' => 'required',
             'email' => 'required|email:rfc,dns|unique:pessoa',
             'password' => 'required|min:8|max:40'

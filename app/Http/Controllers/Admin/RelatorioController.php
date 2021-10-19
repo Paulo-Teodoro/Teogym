@@ -27,25 +27,6 @@ class RelatorioController extends Controller
         return view('app.relatorios.index');
     }
 
-    /**
-     * List routine in pdf
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function rotina($id) {
-        $rotina = Rotina::find($id);
-        if(auth()->user()->is_aluno()) {
-            if($rotina->aluno_id != auth()->user()->id) {
-                abort(403);
-            }
-        }
-        $treinos = $rotina->treinos;
-
-        return PDF::loadView('app.relatorios.rotina', [
-            "treinos" => $treinos
-        ])->stream();
-    }
-
     public function lastAlunos() {
         if(!auth()->user()->is_admin()) {
             abort(403);
@@ -73,7 +54,31 @@ class RelatorioController extends Controller
             "pessoas" => $pessoas
         ])->stream();        
     }   
-    
+
+    /**
+     * List routine in pdf
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rotina($id) {
+        $rotina = Rotina::find($id);
+        if(auth()->user()->is_aluno()) {
+            if($rotina->aluno_id != auth()->user()->id) {
+                abort(403);
+            }
+        }
+        $treinos = $rotina->treinos;
+
+        return PDF::loadView('app.relatorios.rotina', [
+            "treinos" => $treinos
+        ])->stream();
+    }
+
+    /**
+     * List history in pdf
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function historicoAluno($id) {
         if(auth()->user()->is_aluno()) {
             if($rotina->aluno_id != auth()->user()->id) {

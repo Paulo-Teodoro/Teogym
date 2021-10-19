@@ -2,10 +2,10 @@
 @section('content')
 <section class="section-alunos">
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-6">
             <h2>Personais</h2>
         </div>
-        <div class="col-md-3 align-buttons">
+        <div class="col-6 align-buttons">
             <a href="{{ route('personais.create') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add Personal</a>
         </div>
     </div>
@@ -53,6 +53,11 @@
             @endif
         </tbody>
     </table>
+    @if (isset($filters))
+        {!! $personais->appends($filters)->links() !!}      
+    @else
+        {!! $personais->links() !!}
+    @endif
 </section>
 
 @endsection

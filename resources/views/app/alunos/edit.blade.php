@@ -38,11 +38,11 @@
         <div class="row">
             <div class="col-md-6">
                 <label class="form-label">Cpf</label>
-                <input type="text" name="cpf" value="{{ $pessoa->cpf }}" class="form-control">
+                <input type="text" name="cpf" id="cpf" value="{{ $pessoa->cpf }}" class="form-control">
             </div>
             <div class="col-md-6">
                 <label class="form-label">Telefone</label>
-                <input type="text" name="telefone" value="{{ $pessoa->telefone }}" class="form-control">
+                <input type="text" name="telefone" id="telefone" value="{{ $pessoa->telefone }}" class="form-control">
             </div>
         </div>
         <div class="row">
@@ -81,4 +81,13 @@
         <button type="submit" class="btn btn-success">Atualizar</button>
     </form>
 </div>
+@endsection
+@section('scripts')
+{{ Html::script('js/mask.js'); }}
+<script>
+    $(document).ready(function($) {
+        $('#telefone').mask('(00)00000-0000')
+        $('#cpf').mask('000.000.000-00', {reverse: true});
+    });
+</script> 
 @endsection

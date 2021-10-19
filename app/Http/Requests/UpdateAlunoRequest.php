@@ -28,10 +28,9 @@ class UpdateAlunoRequest extends FormRequest
             'data_nasc' => "required",
             'peso' => "required",
             'altura' => 'required',
-            'cpf' => 'required',
-            'telefone' => 'required',
+            'cpf' => 'required|cpf',
+            'telefone' => 'required|celular_com_ddd',
             'objetivo' => 'nullable|min:5|max:200',
-            'cpf' => 'required',
             'endereco' => 'required',
             'email' => "required|email:rfc,dns|unique:pessoa,email,{$this->segment(3)},id",
             'password' => 'nullable|min:8|max:40'

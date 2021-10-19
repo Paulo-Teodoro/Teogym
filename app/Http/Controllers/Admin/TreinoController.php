@@ -28,7 +28,7 @@ class TreinoController extends Controller
                 abort(403);
             }
         }
-        $treinos = $rotina->treinos;
+        $treinos = $rotina->treinos()->paginate();
 
         return view('app.treinos.index', [
             "treinos" => $treinos,

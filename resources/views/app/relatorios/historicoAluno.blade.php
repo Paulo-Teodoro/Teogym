@@ -26,7 +26,7 @@
             <td>{{ $historico->peso }}</td>
             <td>{{ $historico->altura }}</td>
             <td>{{ $historico->imc }}</td>
-            <td>{{ $historico->created_at }}</td>
+            <td>{{ $historico->created_at->format('d/m/Y') }}</td>
         </tr>         
     @endforeach  
     </tbody>

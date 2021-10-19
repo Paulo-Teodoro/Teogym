@@ -2,13 +2,20 @@
 @section('content')
 <section class="section-alunos">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-6">
             <h2>Alunos</h2>
         </div>
-        <div class="col-md-6 align-buttons">
+        <div class="col-6 align-buttons">
             <a href="{{ route('alunos.create') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add Aluno</a>
         </div>
     </div>
+    <div class="row search">
+        <form action="{{ route('alunos.search') }}" method="post" class="form d-flex">
+            @csrf
+            <input type="text" name="filter" placeholder="Nome" class="form-control me-2" value="{{ $filters['filter'] ?? '' }}">
+            <button type="submit" class="btn btn-outline-info">Filtrar</button>
+        </form>
+    </div>    
     <table class="table">
         <thead>
         <tr>
@@ -55,6 +62,11 @@
             @endif
         </tbody>
     </table>
+    @if (isset($filters))
+        {!! $alunos->appends($filters)->links() !!}      
+    @else
+        {!! $alunos->links() !!}
+    @endif
 </section>
 
 @endsection

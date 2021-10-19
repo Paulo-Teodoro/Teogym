@@ -8,7 +8,7 @@
         <div class="col-md-6 align-buttons">
             <a href="{{ route('treinos.index', $rotina) }}" class="btn btn-warning">Voltar</a>    
         @if (!auth()->user()->is_aluno())
-            <a href="{{ route('treino-exercicios.create', [$rotina,$treino] ) }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add exercicio</a>
+            <a href="{{ route('treino-exercicios.create', [$rotina,$treino] ) }}" class="btn btn-info"><i class="fas fa-plus"></i> Add exercicio</a>
         @endif
         </div>
     </div>
@@ -32,7 +32,7 @@
                     <td>{{ $exercicio->pivot->repeticoes }}</td>
                     <td>{{ $exercicio->pivot->series }}</td>
                     <td>
-                        <button type="button" class="btn delete" data-bs-toggle="modal" data-bs-target="#Modal{{ $exercicio->id }}"><i class="fas fa-user-times"></i></button>
+                        <button type="button" class="btn delete" data-bs-toggle="modal" data-bs-target="#Modal{{ $exercicio->id }}"><i class="fas fa-trash-alt"></i></button>
                         <div class="modal fade" id="Modal{{ $exercicio->id }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -61,5 +61,10 @@
         @endif
         </tbody>
     </table>
+    @if (isset($filters))
+        {!! $exercicios->appends($filters)->links() !!}      
+    @else
+        {!! $exercicios->links() !!}
+    @endif
 </section>   
 @endsection

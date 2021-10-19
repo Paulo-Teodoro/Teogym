@@ -9,14 +9,13 @@
             <a href="{{ route('rotinas.index') }}" class="btn btn-warning">Voltar</a>
             <a href="{{ route('relatorios.rotina', $rotina->id) }}" target="_blank" class="btn btn-primary"><i class="fas fa-file-alt"></i> Imprimir</a>
         @if (!auth()->user()->is_aluno())
-            <a href="{{ route('treinos.create', $rotina->id) }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add treino</a>
+            <a href="{{ route('treinos.create', $rotina->id) }}" class="btn btn-info"><i class="fas fa-plus"></i> Add treino</a>
         @endif
         </div>
     </div>
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">id</th>
             <th scope="col">Dia</th>
             <th scope="col">Foco</th>
             <th scope="col">Operações</th>
@@ -26,12 +25,11 @@
         @if($treinos)
             @foreach($treinos as $treino)
                 <tr>
-                    <th scope="row">{{ $treino->id }}</th>
                     <td>{{ $treino->dia }}</td>
                     <td>{{ $treino->foco }}</td>
                     <td>
-                        <a href="{{ route('treino-exercicios.index', [$rotina->id, $treino->id]) }}" class="btn edit"><i class="fas fa-user-edit"></i></a>
-                        <button type="button" class="btn delete" data-bs-toggle="modal" data-bs-target="#Modal{{ $treino->id; }}"><i class="fas fa-user-times"></i></button>
+                        <a href="{{ route('treino-exercicios.index', [$rotina->id, $treino->id]) }}" class="btn edit"><i class="fas fa-dumbbell"></i></a>
+                        <button type="button" class="btn delete" data-bs-toggle="modal" data-bs-target="#Modal{{ $treino->id; }}"><i class="fas fa-trash-alt"></i></button>
                         <div class="modal fade" id="Modal{{ $treino->id; }}" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -59,5 +57,10 @@
         @endif
         </tbody>
     </table>
+    @if (isset($filters))
+        {!! $treinos->appends($filters)->links() !!}      
+    @else
+        {!! $treinos->links() !!}
+    @endif
 </section>
 @endsection

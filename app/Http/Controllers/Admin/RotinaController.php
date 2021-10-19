@@ -130,4 +130,21 @@ class RotinaController extends Controller
         
         return redirect()->route('rotinas.index');
     }
+
+    /**
+     * Search results
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request) 
+    {
+        $filters = $request->except('_token');
+        $rotinas = $this->repository->search($request->filter);
+
+        return view('app.rotinas.index', [
+            'rotinas' => $rotinas,
+            'filters' => $filters
+        ]);
+    }
 }

@@ -2,11 +2,11 @@
 @section('content')
 <section class="section-alunos">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-6">
             <h2>Administradores</h2>
         </div>
-        <div class="col-md-6 align-buttons">
-            <a href="{{ route('admins.create') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add Administrador</a>
+        <div class="col-6 align-buttons">
+            <a href="{{ route('admins.create') }}" class="btn btn-info"><i class="fas fa-user-plus"></i> Add</a>
         </div>
     </div>
     <table class="table">
@@ -53,6 +53,11 @@
             @endif
         </tbody>
     </table>
+    @if (isset($filters))
+        {!! $admins->appends($filters)->links() !!}      
+    @else
+        {!! $admins->links() !!}
+    @endif
 </section>
 
 @endsection

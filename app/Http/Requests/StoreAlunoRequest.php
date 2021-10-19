@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use \LaravelLegends\PtBrValidator\Rules\Cpf;
 
 class StoreAlunoRequest extends FormRequest
 {
@@ -28,10 +30,9 @@ class StoreAlunoRequest extends FormRequest
             'data_nasc' => "required",
             'peso' => "required",
             'altura' => 'required',
-            'cpf' => 'required',
-            'telefone' => 'required',
+            'cpf' => 'required|cpf',
+            'telefone' => 'required|celular_com_ddd',
             'objetivo' => 'nullable|min:5|max:200',
-            'cpf' => 'required',
             'endereco' => 'required',
             'email' => 'required|email:rfc,dns|unique:pessoa',
             'password' => 'required|min:8|max:40'

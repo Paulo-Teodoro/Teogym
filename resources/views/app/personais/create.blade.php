@@ -18,11 +18,11 @@
         <div class="row">
             <div class="col-md-6">
                 <label class="form-label">cpf</label>
-                <input type="text" name="cpf" class="form-control">
+                <input type="text" name="cpf" id="cpf" class="form-control">
             </div>
             <div class="col-md-6">
                 <label class="form-label">telefone</label>
-                <input type="text" name="telefone" class="form-control">
+                <input type="text" name="telefone" id="telefone" class="form-control">
             </div>
         </div>
         <div class="row">
@@ -46,4 +46,13 @@
         <button type="submit" class="btn btn-success">Cadastrar</button>
     </form>
 </div>
+@endsection
+@section('scripts')
+{{ Html::script('js/mask.js'); }}
+<script>
+    $(document).ready(function($) {
+        $('#telefone').mask('(00)00000-0000')
+        $('#cpf').mask('000.000.000-00', {reverse: true});
+    });
+</script> 
 @endsection

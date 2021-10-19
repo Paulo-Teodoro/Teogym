@@ -51,7 +51,7 @@ class TreinoExercicioController extends Controller
             abort(403);
         }
         $treino = $this->repository->find($idTreino);
-        $exercicios = Exercicio::all();
+        $exercicios = Exercicio::orderBy('name')->get();
         return view('app.treinoExercicio.create', [
             "rotina" => $idRotina,
             "treino" => $treino,

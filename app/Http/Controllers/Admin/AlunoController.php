@@ -192,4 +192,21 @@ class AlunoController extends Controller
         
         return redirect()->route('alunos.index')->with('error', "o aluno {$pessoa->name} foi deletado!");
     }
+
+    /**
+     * Search results
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request) 
+    {
+        $filters = $request->except('_token');
+        $alunos = $this->repository->searchAlunos($request->filter);
+
+        return view('app.alunos.index', [
+            'alunos' => $alunos,
+            'filters' => $filters
+        ]);
+    }
 }
